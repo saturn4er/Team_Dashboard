@@ -1,0 +1,12 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.board {
+  width: 100%;
+  height: 1000px;
+}
+.uml_block .uml_block__head {
+  fill: none;
+  stroke: black;
+}

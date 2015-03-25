@@ -1,0 +1,10 @@
+{
+  "name": "dashboard",
+  "description": "Team Developpers Dashboard",
+  "author": "Saturn4er <saturn4er@gmail.com>",
+  "start": "index.js",
+  "dependencies": {
+    "socket.io": ">=1.3.5",
+    "node-gyp": ">=1.0.3"
+  }
+}

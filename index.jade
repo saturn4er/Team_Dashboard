@@ -1,0 +1,24 @@
+- var domain = 'http://127.0.0.1:8080'
+doctype html5
+html
+    head
+        title Developpers Team Dashboard
+        link(rel="stylesheet", href="static/css/main.css")
+    body
+        .header
+            .header__logo
+            ul.header__navigation
+            .header__online_users
+        svg.board(width=0, height=0) Your browser doesn't support SVG
+        .tools
+            .tools__tool.icon__pencil
+            .tools__tool.icon__hand
+
+    script(type="text/javascript", src="#{domain}/socket.io/socket.io.js")
+    script(type="text/javascript", src="static/js/libs/snap.svg.js")
+    script(type="text/javascript", src="static/js/EventEmitter.js")
+    script(type="text/javascript", src="static/js/elements/uml_block.js")
+    script(type="text/javascript", src="static/js/Board.js")
+    script(type="text/javascript", src="static/js/main.js")
+
+
