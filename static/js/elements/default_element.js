@@ -37,9 +37,9 @@
     };
 
     DefaultElement.prototype.update = function(params) {
-      var i, key, len, val;
-      for (val = i = 0, len = params.length; i < len; val = ++i) {
-        key = params[val];
+      var key, val;
+      for (key in params) {
+        val = params[key];
         this.params[key] = val;
       }
       return this.redraw();

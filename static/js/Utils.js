@@ -33,8 +33,10 @@
     };
 
     Utils.prototype.changeUtil = function(i) {
-      this.selectedID = i;
-      return this.updateClasses();
+      if (i !== this.selectedID) {
+        this.selectedID = i;
+        return this.updateClasses();
+      }
     };
 
     Utils.prototype.updateClasses = function() {

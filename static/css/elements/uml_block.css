@@ -1,12 +1,14 @@
+@font-face {
+}
 .uml_block .uml_block__container {
-  fill: white;
-  stroke: #82a8da;
+  fill: #444949;
+  stroke: none;
   stroke-width: 2;
 }
 .uml_block .uml_block__label {
-  stroke: black;
-  fill: black;
-  stroke-width: 0.5;
+  stroke: #ffffff;
+  fill: #ffffff;
+  stroke-width: 0;
 }
 .uml_block .uml_block__separator {
   stroke: #82a8da;

@@ -1,115 +1,107 @@
 uml_block_class = 'uml_block'
+min_container_width = 200
+
+percents_per_label = 14
+
+min_label_box_height = 25
+min_method_box_height = 25
+min_field_box_height = 25
+
 class @UMLBlock extends DefaultElement
-  constructor: (@svg, @ClassName, @x, @y, @width, @fields, @methods, @hash)->
+  constructor: (@board, @params, @hash)->
+    super(@board, 'uml-block', @params, @hash)
     unless @hash
       @hash = Math.random().toString(36).substr(2, 15)
-    @label_box_height = 25;
-    @field_box_height = 25;
-    @method_box_height = 25;
-    @min_container_width = 100;
-    @width = @min_container_width if @width < @min_container_width
-    @save()
 
-    container_height = @calc_container_height()
-    @container = @svg.rect(@x, @y, @width, container_height, 20)
+    @svg = @board.getBoard()
+    @focused = false
+    @container = @svg.rect(1, 1, 100, 100)
     @container.addClass(uml_block_class + '__container')
 
-    label_box = @add_label_box()
+    @label_box = @svg.rect(1, 1, 1, 1)
+    @label_box.addClass(uml_block_class + '__label_box')
 
 
-    @uml_block = @svg.group(@container, label_box)
+    @uml_block = @svg.group(@container, @label_box)
     @uml_block.addClass('uml_block')
+    @redraw()
+    @drag()
+    @setFocusable()
 
-    beforeDragPoint = {x:0, y:0}
+  recalculate_dimensions: ()->
+    @params.width = min_container_width if @params.width < min_container_width
+    default_label_height = @params.height * percents_per_label / 100
+    @label_height =
+      if default_label_height < min_label_box_height
+        min_label_box_height
+      else
+        default_label_height
 
-    dragStart = (x,y)=>
-      beforeDragPoint.x = @x
-      beforeDragPoint.y = @y
+    @fields_count = Object.keys(@params.fields).length
+    @methods_count = Object.keys(@params.methods).length
+
+    default_field_height = ( @params.height - @label_height ) / (@fields_count + @methods_count)
+
+    @method_height =
+      if default_field_height < min_method_box_height
+        min_method_box_height
+      else
+        default_field_height
+
+    @field_height =
+      if default_field_height < min_field_box_height
+        min_field_box_height
+      else
+        default_field_height
+
+  redraw: ()->
+    super()
+    @recalculate_dimensions()
+    container_height = @label_height + @method_height * @methods_count + @field_height * @fields_count
+    @container.attr width: @params.width, height: container_height, x: @params.x, y: @params.y
+    @label_box.attr x: @params.x, y: @params.y, width: @params.width, height: @label_height
+
+  setFocusable: ->
+    programEvents.on('util-changed', =>
+      if @focused
+        @unfocus()
+        @emit('unfocus')
+    )
+    @svg.click (e)=>
+      return unless @focused
+      e.stopPropagation()
+      e.cancelBubble = true
+      if Board.utility_name == 'select'
+        @unfocus()
+        @emit('unfocus')
+    @uml_block.click (e)=>
+      e.stopPropagation()
+      e.cancelBubble = true
+      if Board.utility_name == 'select' && !@focused
+        @focus()
+        @emit('focus')
+  focus: ->
+    @focused = true
+    console.log('focus')
+  unfocus: ->
+    @focused = false
+    console.log('unfocus')
+  drag: ()->
+    beforeDragPoint = {x: 0, y: 0}
+    dragStart = =>
+      beforeDragPoint.x = @params.x
+      beforeDragPoint.y = @params.y
 
     dragHandler = (dx, dy)=>
-      if Board.utility == 1
-        @x = beforeDragPoint.x + dx
-        @y = beforeDragPoint.y + dy
-        @save()
+      unless Board.utility_name == 'hand'
+        return
+      @params.x = beforeDragPoint.x + dx
+      @params.y = beforeDragPoint.y + dy
+      @redraw()
+      @save()
 
-    @uml_block.drag()
+    @uml_block.drag(dragHandler, dragStart)
 
-#    right_resizing = false
-#    @uml_block.mousemove((e,x,y)=>
-#      @uml_block.addClass('available_resize')
-#      if( x > @x+@width-5 && x<=@x+@width && y>@y && y<@y+container_height)
-#        @uml_block.mousedown =>
-#          right_resizing = true
-#          @uml_block.undrag()
-#        @uml_block.mouseup =>
-#          right_resizing = false
-#          @uml_block.drag()
-#      else
-#
-#        @uml_block.removeClass('available_resize')
-#        @uml_block.unmouseup()
-#        @uml_block.unmousedown()
-#    )
-
-  get_hash: ->
-    @hash
-  calc_container_height: ->
-    fields_height = Object.keys(@fields).length * @field_box_height
-    methods_height = Object.keys(@methods).length * @method_box_height
-    return @label_box_height + fields_height + methods_height
-
-  add_label_box: ()->
-    @label = @svg.text(@x, @y, @ClassName)
-    @label.addClass('uml_block__label')
-    @recalculate_label_box()
-
-    @label_divider = @svg.line(@x, @y + @label_box_height, @x + @width, @y + @label_box_height)
-    @label_divider.addClass('uml_block__separator')
-    @svg.group(@label_divider, @label)
-
-  recalculate_container: ->
-    @container.attr(
-      x: @x,
-      y: @y,
-      width: @width,
-      height: @calc_container_height()
-    )
-  recalculate_label_box: ->
-    container_size = @container.getBBox()
-    label_size = @label.getBBox()
-    @label.attr({
-      x: @x + container_size.width / 2 - label_size.width / 2,
-      y: @y + label_size.height + @label_box_height / 2 - label_size.height / 2
-    })
-  recalculate_label_separator: ->
-    @label_divider.attr({
-      x1: @x,
-      y1: @y + @label_box_height,
-      x2: @x + @width,
-      y2: @y + @label_box_height
-    })
-  save: ->
-    socket.emit('saveElement', @hash,
-      {
-        type: 'uml_block',
-        params: {
-          name: @ClassName,
-          x: @x, y: @y,
-          width: @width,
-          fields: @fields,
-          methods: @methods
-        }
-      })
-  recalculate_positions: ->
-    @recalculate_container()
-    @recalculate_label_box()
-    @recalculate_label_separator()
   update: (params)->
-    @x = params.x
-    @y = params.y
-    @width = params.width
-    @fields = params.fields
-    @methods = params.methods
-    @recalculate_positions()
-
-
+    super(params)
+    @redraw()

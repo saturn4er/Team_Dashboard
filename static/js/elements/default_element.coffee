@@ -20,7 +20,7 @@ class @DefaultElement extends EventEmitter
       })
 
   update: (params)->
-    for key,val in params
+    for key,val of params
       @params[key] = val
     @redraw()
 

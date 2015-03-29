@@ -7,6 +7,12 @@
 window.onload  = ->
     @programEvents.emit('load')
 
-@socket = io('127.0.0.1:8080');
+try
+    @socket = io('127.0.0.1:8080');
+catch e
+    console.log(e)
+
+
 board = new Board('.board')
-utils = new Utils('tools',1)
+utils = new Utils('tools',0)
+

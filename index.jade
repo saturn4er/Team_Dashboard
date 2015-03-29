@@ -11,10 +11,12 @@ html
             .header__online_users
 
         .tools
+            .tools__tool.icon_select(data-type="select")
             .tools__tool.icon_pencil.selected(data-type="pencil")
             .tools__tool.icon_hand(data-type="hand")
-                script(type="text/javascript", src="#{domain}/socket.io/socket.io.js")
+            .tools__tool.icon_uml_block(data-type="uml-block")
         svg.board(width=0, height=0) Your browser doesn't support SVG
+    script(type="text/javascript", src="#{domain}/socket.io/socket.io.js")
     script(type="text/javascript", src="static/js/libs/snap.svg.js")
     script(type="text/javascript", src="static/js/EventEmitter.js")
     script(type="text/javascript", src="static/js/Utils.js")

@@ -15,8 +15,9 @@ class @Utils
     return
 
   changeUtil: (i)->
-    @selectedID = i
-    @updateClasses()
+    if i != @selectedID
+      @selectedID = i
+      @updateClasses()
 
 
   updateClasses: ->

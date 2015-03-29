@@ -8,6 +8,11 @@
   display: inline-block;
   background: url(../img/sprites.png) no-repeat;
 }
+.tools .tools__tool.icon_select {
+  background-position: -150px 0;
+  width: 48px;
+  height: 48px;
+}
 .tools .tools__tool.icon_pencil {
   background-position: -48px 0;
   width: 48px;
@@ -18,9 +23,29 @@
   width: 48px;
   height: 48px;
 }
+.tools .tools__tool.icon_uml_block {
+  background-position: -98px 0;
+  width: 48px;
+  height: 48px;
+}
 .tools .tools__tool:hover {
   background-color: #717f80;
 }
 .tools .tools__tool.selected {
   background-color: #95a5a6;
+}
+.Editor-48 {
+  background-position: -50px 0;
+  width: 48px;
+  height: 48px;
+}
+.Drag-and-Drop-48 {
+  background-position: 0 0;
+  width: 48px;
+  height: 48px;
+}
+.Navigation-48 {
+  background-position: -150px 0;
+  width: 48px;
+  height: 48px;
 }

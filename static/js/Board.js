@@ -3,6 +3,8 @@
   this.Board = (function() {
     Board.utility = 0;
 
+    Board.utility_name = '';
+
     Board.boardShift = {
       0: 0,
       0: 0
@@ -11,21 +13,43 @@
     Board.board = void 0;
 
     function Board(svg_selector) {
-      var boardOffsetX, boardOffsetY, elements, uml;
+      var boardOffsetX, boardOffsetY, elements;
       this.board = Snap(svg_selector);
-      this.board_group = this.board.group();
       boardOffsetX = 0;
       boardOffsetY = 0;
       elements = {};
-      uml = new UMLBlock(this.board, "Test", 100, 100, 150, {
-        "test_field1": 'int',
-        "test_field2": 'int'
-      }, {
-        "test": 1,
-        "test2": 3,
-        "test3": 4
+      programEvents.on('util-changed', function(util, util_name) {
+        Board.utility = util;
+        return Board.utility_name = util_name;
       });
-      elements[uml.get_hash()] = uml;
+      socket.on('updateElement', (function(_this) {
+        return function(connection_color, hash, data) {
+          var new_block;
+          if (elements[hash]) {
+            return elements[hash].update(data.params);
+          } else {
+            new_block = new UMLBlock(_this, data.params, hash);
+            return elements[new_block.get_hash()] = new_block;
+          }
+        };
+      })(this));
+      this.board.click((function(_this) {
+        return function(e) {
+          var uml;
+          if (Board.utility_name === 'uml-block') {
+            console.log(e);
+            uml = new UMLBlock(_this, {
+              x: e.offsetX,
+              y: e.offsetY,
+              width: 0,
+              height: 0,
+              fields: {},
+              methods: {}
+            });
+            return elements[uml.get_hash()] = uml;
+          }
+        };
+      })(this));
     }
 
     Board.prototype.getBoard = function() {
