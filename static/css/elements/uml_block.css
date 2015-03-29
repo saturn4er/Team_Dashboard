@@ -1,4 +1,17 @@
-.uml_block .uml_block__head {
-  fill: none;
+.uml_block .uml_block__container {
+  fill: white;
+  stroke: #82a8da;
+  stroke-width: 2;
+}
+.uml_block .uml_block__label {
   stroke: black;
+  fill: black;
+  stroke-width: 0.5;
+}
+.uml_block .uml_block__separator {
+  stroke: #82a8da;
+  stroke-width: 2;
+}
+.uml_block.available_resize {
+  cursor: e-resize;
 }

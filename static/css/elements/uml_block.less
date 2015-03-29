@@ -1,6 +1,24 @@
-.uml_block{
-  & &__head{
-    fill: none;
-    stroke: black;
+@block_color: #82a8da;
+@block_lines_width: 2;
+@label_color: black;
+
+@text_stroke_width:0.5;
+.uml_block {
+  & &__container {
+    fill: white;
+    stroke: @block_color;
+    stroke-width: @block_lines_width;
+  }
+  & &__label {
+    stroke: @label_color;
+    fill: @label_color;
+    stroke-width: @text_stroke_width;
+  }
+  & &__separator{
+    stroke: @block_color;
+    stroke-width: @block_lines_width;
+  }
+  &.available_resize{
+    cursor: e-resize;
   }
 }

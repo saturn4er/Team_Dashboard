@@ -3,6 +3,7 @@ fs = require('fs')
 class @FileDB
   data = {}
   constructor: (@file_name, @write_timeout = 1000)->
+    @startWriteToFileTimer()
 
   setWriteToFileTimeout: (@write_timeout)->
     @stopWriteToFileTimer()
@@ -21,6 +22,9 @@ class @FileDB
   writeToFile: ->
     fs.writeFile(@file_name, JSON.stringify(data), (err)->
       if(err)
-        return console.log(err);
-      console.log("The file was saved!"))
+        return console.log(err))
+
+
+
+module.exports = @FileDB
 

@@ -12,6 +12,7 @@
     function FileDB(file_name, write_timeout) {
       this.file_name = file_name;
       this.write_timeout = write_timeout != null ? write_timeout : 1000;
+      this.startWriteToFileTimer();
     }
 
     FileDB.prototype.setWriteToFileTimeout = function(write_timeout) {
@@ -43,13 +44,14 @@
         if (err) {
           return console.log(err);
         }
-        return console.log("The file was saved!");
       });
     };
 
     return FileDB;
 
   })();
+
+  module.exports = this.FileDB;
 
 }).call(this);
 
