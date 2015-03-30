@@ -14,6 +14,8 @@ class @UMLBlock extends DefaultElement
       @hash = Math.random().toString(36).substr(2, 15)
 
     @svg = @board.getBoard()
+    @svg_fields = []
+    @svg_methods = []
     @focused = false
     @container = @svg.rect(1, 1, 100, 100)
     @container.addClass(uml_block_class + '__container')
@@ -60,6 +62,9 @@ class @UMLBlock extends DefaultElement
     container_height = @label_height + @method_height * @methods_count + @field_height * @fields_count
     @container.attr width: @params.width, height: container_height, x: @params.x, y: @params.y
     @label_box.attr x: @params.x, y: @params.y, width: @params.width, height: @label_height
+    field.remove() for field in @svg_fields
+    method.remove() for method in @svg_methods
+
 
   setFocusable: ->
     programEvents.on('util-changed', =>
@@ -82,16 +87,25 @@ class @UMLBlock extends DefaultElement
         @emit('focus')
   focus: ->
     @focused = true
-    console.log('focus')
+    @container.addClass('focus')
+
   unfocus: ->
+    @container.removeClass('focus')
     @focused = false
-    console.log('unfocus')
   drag: ()->
     beforeDragPoint = {x: 0, y: 0}
     dragStart = =>
+      unless Board.utility_name == 'hand'
+        return
+      @container.addClass('dragging')
       beforeDragPoint.x = @params.x
       beforeDragPoint.y = @params.y
-
+    dragEnd = =>
+      unless Board.utility_name == 'hand'
+        return
+      programEvents.emit('add-to-history', @get_hash(), {x: beforeDragPoint.x, y: beforeDragPoint.y},
+        {x: @params.x, y: @params.y})
+      @container.removeClass('dragging')
     dragHandler = (dx, dy)=>
       unless Board.utility_name == 'hand'
         return
@@ -100,7 +114,7 @@ class @UMLBlock extends DefaultElement
       @redraw()
       @save()
 
-    @uml_block.drag(dragHandler, dragStart)
+    @uml_block.drag(dragHandler, dragStart, dragEnd)
 
   update: (params)->
     super(params)

@@ -28,6 +28,8 @@
         this.hash = Math.random().toString(36).substr(2, 15);
       }
       this.svg = this.board.getBoard();
+      this.svg_fields = [];
+      this.svg_methods = [];
       this.focused = false;
       this.container = this.svg.rect(1, 1, 100, 100);
       this.container.addClass(uml_block_class + '__container');
@@ -55,7 +57,7 @@
     };
 
     UMLBlock.prototype.redraw = function() {
-      var container_height;
+      var container_height, field, i, j, len, len1, method, ref, ref1, results;
       UMLBlock.__super__.redraw.call(this);
       this.recalculate_dimensions();
       container_height = this.label_height + this.method_height * this.methods_count + this.field_height * this.fields_count;
@@ -65,12 +67,24 @@
         x: this.params.x,
         y: this.params.y
       });
-      return this.label_box.attr({
+      this.label_box.attr({
         x: this.params.x,
         y: this.params.y,
         width: this.params.width,
         height: this.label_height
       });
+      ref = this.svg_fields;
+      for (i = 0, len = ref.length; i < len; i++) {
+        field = ref[i];
+        field.remove();
+      }
+      ref1 = this.svg_methods;
+      results = [];
+      for (j = 0, len1 = ref1.length; j < len1; j++) {
+        method = ref1[j];
+        results.push(method.remove());
+      }
+      return results;
     };
 
     UMLBlock.prototype.setFocusable = function() {
@@ -109,24 +123,43 @@
 
     UMLBlock.prototype.focus = function() {
       this.focused = true;
-      return console.log('focus');
+      return this.container.addClass('focus');
     };
 
     UMLBlock.prototype.unfocus = function() {
-      this.focused = false;
-      return console.log('unfocus');
+      this.container.removeClass('focus');
+      return this.focused = false;
     };
 
     UMLBlock.prototype.drag = function() {
-      var beforeDragPoint, dragHandler, dragStart;
+      var beforeDragPoint, dragEnd, dragHandler, dragStart;
       beforeDragPoint = {
         x: 0,
         y: 0
       };
       dragStart = (function(_this) {
         return function() {
+          if (Board.utility_name !== 'hand') {
+            return;
+          }
+          _this.container.addClass('dragging');
           beforeDragPoint.x = _this.params.x;
           return beforeDragPoint.y = _this.params.y;
+        };
+      })(this);
+      dragEnd = (function(_this) {
+        return function() {
+          if (Board.utility_name !== 'hand') {
+            return;
+          }
+          programEvents.emit('add-to-history', _this.get_hash(), {
+            x: beforeDragPoint.x,
+            y: beforeDragPoint.y
+          }, {
+            x: _this.params.x,
+            y: _this.params.y
+          });
+          return _this.container.removeClass('dragging');
         };
       })(this);
       dragHandler = (function(_this) {
@@ -140,7 +173,7 @@
           return _this.save();
         };
       })(this);
-      return this.uml_block.drag(dragHandler, dragStart);
+      return this.uml_block.drag(dragHandler, dragStart, dragEnd);
     };
 
     UMLBlock.prototype.update = function(params) {

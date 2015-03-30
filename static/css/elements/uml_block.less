@@ -2,25 +2,34 @@
 @block_lines_width: 2;
 @label_color: #ffffff;
 @text_stroke_width: 0;
-@font-face {
 
-}
 .uml_block {
   & &__container {
     fill: #444949;
     stroke: none;
     stroke-width: @block_lines_width;
+    .dashed_stroke {
+      stroke-dasharray: 5, 5;
+      stroke: white;
+      z-index: 2000;
+    }
+    &.focus {
+      .dashed_stroke()
+    }
+    &.dragging {
+      .dashed_stroke()
+    }
   }
   & &__label {
     stroke: @label_color;
     fill: @label_color;
     stroke-width: @text_stroke_width;
   }
-  & &__separator{
+  & &__separator {
     stroke: @block_color;
     stroke-width: @block_lines_width;
   }
-  &.available_resize{
+  &.available_resize {
     cursor: e-resize;
   }
 }

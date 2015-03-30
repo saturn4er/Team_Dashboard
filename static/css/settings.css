@@ -1,0 +1,21 @@
+.settings {
+  position: absolute;
+  right: 0;
+  background-color: #d5d5d5;
+  width: 300px;
+}
+.settings .settings__label {
+  text-align: center;
+  font-size: 20px;
+  padding: 2px 0 2px 0;
+  border-bottom: 1px solid black;
+}
+.settings .settings__settings_box .setting {
+  padding: 1px 5px;
+}
+.settings .settings__settings_box .setting .label {
+  text-align: center;
+}
+.settings .settings__settings_box .setting p {
+  margin: 2px 0;
+}

@@ -5,16 +5,65 @@
 body {
   background-color: #95a5a6;
 }
+.column-1 {
+  width: 8.33333333%;
+}
+.column-2 {
+  width: 16.66666667%;
+}
+.column-3 {
+  width: 25%;
+}
+.column-4 {
+  width: 33.33333333%;
+}
+.column-5 {
+  width: 41.66666667%;
+}
+.column-6 {
+  width: 50%;
+}
+.column-7 {
+  width: 58.33333333%;
+}
+.column-8 {
+  width: 66.66666667%;
+}
+.column-9 {
+  width: 75%;
+}
+.column-10 {
+  width: 83.33333333%;
+}
+.column-11 {
+  width: 91.66666667%;
+}
+.column-12 {
+  width: 100%;
+}
 .board {
   width: 100%;
   height: 1000px;
-}
-@font-face {
 }
 .uml_block .uml_block__container {
   fill: #444949;
   stroke: none;
   stroke-width: 2;
+}
+.uml_block .uml_block__container .dashed_stroke {
+  stroke-dasharray: 5, 5;
+  stroke: white;
+  z-index: 2000;
+}
+.uml_block .uml_block__container.focus {
+  stroke-dasharray: 5, 5;
+  stroke: white;
+  z-index: 2000;
+}
+.uml_block .uml_block__container.dragging {
+  stroke-dasharray: 5, 5;
+  stroke: white;
+  z-index: 2000;
 }
 .uml_block .uml_block__label {
   stroke: #ffffff;
@@ -78,4 +127,25 @@ body {
   background-position: -150px 0;
   width: 48px;
   height: 48px;
+}
+.settings {
+  position: absolute;
+  right: 0;
+  background-color: #d5d5d5;
+  width: 300px;
+}
+.settings .settings__label {
+  text-align: center;
+  font-size: 20px;
+  padding: 2px 0 2px 0;
+  border-bottom: 1px solid black;
+}
+.settings .settings__settings_box .setting {
+  padding: 1px 5px;
+}
+.settings .settings__settings_box .setting .label {
+  text-align: center;
+}
+.settings .settings__settings_box .setting p {
+  margin: 2px 0;
 }

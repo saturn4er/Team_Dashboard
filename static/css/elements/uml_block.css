@@ -1,9 +1,22 @@
-@font-face {
-}
 .uml_block .uml_block__container {
   fill: #444949;
   stroke: none;
   stroke-width: 2;
+}
+.uml_block .uml_block__container .dashed_stroke {
+  stroke-dasharray: 5, 5;
+  stroke: white;
+  z-index: 2000;
+}
+.uml_block .uml_block__container.focus {
+  stroke-dasharray: 5, 5;
+  stroke: white;
+  z-index: 2000;
+}
+.uml_block .uml_block__container.dragging {
+  stroke-dasharray: 5, 5;
+  stroke: white;
+  z-index: 2000;
 }
 .uml_block .uml_block__label {
   stroke: #ffffff;

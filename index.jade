@@ -9,12 +9,38 @@ html
             .header__logo
             ul.header__navigation
             .header__online_users
-
         .tools
             .tools__tool.icon_select(data-type="select")
             .tools__tool.icon_pencil.selected(data-type="pencil")
             .tools__tool.icon_hand(data-type="hand")
             .tools__tool.icon_uml_block(data-type="uml-block")
+        .settings
+            .settings__label UML Block
+            .settings__settings_box
+                .setting
+                    .label.column-12 Block name
+                    input(type="text").column-12
+                .setting
+                    .label.column-12 Methods
+                    p
+                        input(type='text',placeholder='New method name').column-10
+                        input(type='button',value="Add").column-2
+                    p
+                        select.column-12(multiple=true)
+                            option getAttr()
+                    p
+                        input(type='button',value="Delete this method").column-12
+                .setting
+                    .label.column-12 Fields
+                    p
+                        input(type='text',placeholder='New field name').column-10
+                        input(type='button',value="Add").column-2
+                    p
+                        select.column-12(multiple=true)
+                            option field1
+                    p
+                        input(type='button',value="Delete this field").column-12
+
         svg.board(width=0, height=0) Your browser doesn't support SVG
     script(type="text/javascript", src="#{domain}/socket.io/socket.io.js")
     script(type="text/javascript", src="static/js/libs/snap.svg.js")

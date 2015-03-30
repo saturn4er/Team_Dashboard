@@ -6,6 +6,15 @@
 body{
   background-color: #95a5a6;
 }
+.generate-columns(12);
+
+.generate-columns(@n, @i: 1) when (@i =< @n) {
+  .column-@{i} {
+    width: (@i * 100% / @n);
+  }
+  .generate-columns(@n, (@i + 1));
+}
 @import 'board';
 @import 'elements/uml_block';
 @import 'utils';
+@import "settings";
